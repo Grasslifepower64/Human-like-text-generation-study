@@ -11,6 +11,19 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const LOG_FILE = path.join(__dirname, 'logs', 'all_sessions.json');
 
+const logDir = path.join(__dirname, 'logs');
+const logFile = path.join(logDir, 'all_sessions.txt');
+
+// フォルダがなければ作成
+if (!fs.existsSync(logDir)) {
+  fs.mkdirSync(logDir);
+}
+
+// ファイルがなければ作成（追記モードで開くと自動生成される）
+const stream = fs.createWriteStream(logFile, { flags: 'a' });
+
+
+
 app.use(session({
   secret: 'your-secret-key',
   resave: false,
