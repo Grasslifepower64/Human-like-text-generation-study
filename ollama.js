@@ -25,6 +25,7 @@ module.exports = { queryOllama };
 
 
 //改良版
+require('dotenv').config(); // ← これをファイルの先頭に追加
 const axios = require('axios');
 
 /**
