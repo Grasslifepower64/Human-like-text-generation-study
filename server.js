@@ -1,3 +1,4 @@
+require('dotenv').config(); // ← ファイルの先頭に追加
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
