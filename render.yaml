@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: humanlike-chat-ai
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: OPENAI_API_KEY
+        value: your-api-key-here
+      - key: SESSION_SECRET
+        value: your-secret-key
