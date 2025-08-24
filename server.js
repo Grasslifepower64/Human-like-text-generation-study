@@ -5,7 +5,10 @@ const fs = require('fs');
 const path = require('path');
 const session = require('express-session');
 const { generatePrompt, generateSettings } = require('./promptGenerator');
-const { queryOllama } = require('./ollama');
+//const { queryOllama } = require('./ollama');
+
+const { queryOpenAI } = require('./openai');
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -165,8 +168,12 @@ app.post('/chat', async (req, res) => {
     ? `${recentHistory}\nユーザー: ${userInput}\nAI:`
     : `ユーザー: ${userInput}\nAI:`;
 
+  /*
   const prompt = generatePrompt(promptWithHistory, sessionData.promptSettings);
   const aiResponse = await queryOllama(prompt);
+  */
+  const { systemMessageContent, userMessageContent } = generatePrompt(promptWithHistory, sessionData.promptSettings);
+  const aiResponse = await queryOpenAI(systemMessageContent, userMessageContent);
 
   sessionData.conversation.push({ userInput, aiResponse });
 

@@ -91,6 +91,9 @@ function buildSystemInstruction(settings) {
   return instruction.trim();
 }
 
+
+
+/*
 function generatePrompt(userInput, settings) {
   const systemInstruction = buildSystemInstruction(settings);
 
@@ -100,6 +103,18 @@ ${systemInstruction}
 「${userInput}」
 `;
 }
+*/
+
+function generatePrompt(userInput, settings) {
+  const systemInstruction = buildSystemInstruction(settings);
+  const userMessage = `以下の発言に返答してください：\n「${userInput}」`;
+
+  return {
+    system: systemInstruction,
+    user: userMessage,
+  };
+}
+
 
 function generateSettings() {
   return {
