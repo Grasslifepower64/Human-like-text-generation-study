@@ -110,8 +110,8 @@ function generatePrompt(userInput, settings) {
   const userMessage = `以下の発言に返答してください：\n「${userInput}」`;
 
   return {
-    system: systemInstruction,
-    user: userMessage,
+    systemMessageContent: systemInstruction,
+    userMessageContent: userMessage
   };
 }
 

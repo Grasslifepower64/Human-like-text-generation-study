@@ -12,6 +12,8 @@ function isEssayRequest(prompt) {
 // OpenAI APIの初期化
 const OpenAI = require('openai');
 
+console.log("🔍 OPENAI_API_KEY:", process.env.OPENAI_API_KEY);
+
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
