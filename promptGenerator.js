@@ -1,39 +1,3 @@
-/*
-const dialects = ['関西弁', '博多弁', '津軽弁', '標準語'];
-const empathyLevels = ['低', '中', '高'];
-const grammarNoise = ['なし', '少し含めてください'];
-const emotionIntensity = ['控えめ', '普通', '多め'];
-
-function randomPick(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-
-function generatePrompt(userInput, settings) {
-  const { dialect, empathy, grammarNoise, emotionIntensity } = settings;
-
-  return `
-あなたは日本語の${dialect}を話すAIです。
-空気読みのレベルは「${empathy}」です。
-文法ミスは${grammarNoise}。
-感動詞の使用量は${emotionIntensity}にしてください。
-以下の発言に返答してください：
-「${userInput}」
-`;
-}
-
-function generateSettings() {
-  return {
-    dialect: randomPick(dialects),
-    empathy: randomPick(empathyLevels),
-    grammarNoise: randomPick(grammarNoise),
-    emotionIntensity: randomPick(emotionIntensity)
-  };
-}
-
-module.exports = { generatePrompt, generateSettings };
-*/
-
-
 const dialects = ['関西弁', '博多弁', '津軽弁', '標準語'];
 const empathyLevels = ['低', '中', '高'];
 const grammarNoiseLevels = ['なし', '少し', '時々', '頻繁'];

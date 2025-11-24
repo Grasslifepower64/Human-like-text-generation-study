@@ -3,48 +3,15 @@
 <head>
   <meta name="robots" content="noindex, nofollow">
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- ★スマホ対応必須 -->
   <title>Airチャット</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #f0f0f0;
-      font-family: sans-serif;
-      text-align: center;
-    }
-
-    #start-screen {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    
-    #start-screen img {
-      max-width: 80%;
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-    
-    #start-screen h1 {
-      margin-top: 20px;
-      font-size: 2.5em;
-      color: #333;
-    }
-    
-    #start-screen p {
-      font-size: 1.2em;
-      color: #666;
-    }
-  </style>
 </head>
+
 <body>
   <!-- タイトル画面 -->
-  <div id="start-screen">
-    <img src="Airchat_rogo.png" alt="Airチャット" style="max-width: 200px; margin-bottom: 20px;" />
+  <div id="start-screen" class="center-screen">
+    <img src="Airchat_rogo.png" alt="Airチャット" class="logo"/>
     <h1>Airチャット</h1>
     <p>Enterキーまたはタップでスタート</p>
   </div>
@@ -53,31 +20,37 @@
   <div id="consent-modal" class="modal">
     <div class="modal-content">
       <h2>利用に関するご案内</h2>
-      <p>このアプリでは、会話ログなどを研究目的で使用する可能性があります。ご同意いただける場合のみご利用ください。</p>
-      <button onclick="acceptConsent()">同意する</button>
+      <p>
+        このアプリでは、会話ログなどを研究目的で使用する可能性があります。<br>
+        ご同意いただける場合のみご利用ください。
+      </p>
+      <button onclick="acceptConsent()" class="main-button">同意する</button>
     </div>
   </div>
 
   <!-- チャット画面 -->
-  <div id="chat-screen" style="display: none;">
+  <div id="chat-screen" class="hidden">
 
-  <h1>AIと会話してみよう</h1>
-  <div id="chat-box"></div>
-  <input type="text" id="user-input" placeholder="メッセージを入力..." />
-  <button onclick="sendMessage()">送信</button>
+    <h1 class="page-title">AIと会話してみよう</h1>
 
+    <div id="chat-box" class="chat-box"></div>
 
- <!-- フィードバックフォーム追加 -->
- <div id="feedback-section">
-   <span>　人らしかった？</span>
-   <button id="thumbs-up">👍</button>
-   <button id="thumbs-down">👎</button>
-   <input type="text" id="feedback-comment" placeholder="コメント（任意）" />
-   <button id="send-feedback">フィードバック送信</button>
- </div>
+    <div class="input-area">
+      <input type="text" id="user-input" placeholder="メッセージを入力..." />
+      <button onclick="sendMessage()" class="main-button">送信</button>
+    </div>
 
- <script src="script.js"></script>
- <!-- ...existing code... -->
+    <!-- フィードバック -->
+    <div id="feedback-section" class="feedback">
+      <span>人らしかった？</span>
+      <button id="thumbs-up" class="icon-btn">👍</button>
+      <button id="thumbs-down" class="icon-btn">👎</button>
+      <input type="text" id="feedback-comment" placeholder="コメント（任意）" />
+      <button id="send-feedback" class="main-button small">フィードバック送信</button>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
-

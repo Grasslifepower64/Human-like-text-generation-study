@@ -6,11 +6,6 @@ const customSessionID = sessionStorage.getItem('customSessionID');
 
 
 
-
-
-
-
-
 window.onload = function () {
   // タイトル画面にキー/タップイベントを追加
   document.addEventListener("keydown", startApp);
@@ -42,32 +37,24 @@ function showChatScreen() {
   document.getElementById("chat-screen").style.display = "block";
 }
 
-/*
-async function sendMessage() {
-  const input = document.getElementById('user-input').value;
-  if (!input) return;
 
-  appendMessage('🧑‍💻 あなた: ' + input);
-  document.getElementById('user-input').value = '';
+function addMessage(text, sender) {
+  const chatBox = document.getElementById("chat-box");
 
-  const res = await fetch('/chat', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: input })
-  });
+  const msg = document.createElement("div");
+  msg.classList.add("message", sender);
 
-  const data = await res.json();
-  appendMessage('🤖 AI: ' + data.response);
+  const bubble = document.createElement("div");
+  bubble.classList.add("bubble");
+  bubble.innerText = text;
+
+  msg.appendChild(bubble);
+  chatBox.appendChild(msg);
+
+  // 自動スクロール
+  chatBox.scrollTop = chatBox.scrollHeight;
 }
-*/
 
-function appendMessage(msg) {
-  const box = document.getElementById('chat-box');
-  const div = document.createElement('div');
-  div.textContent = msg;
-  box.appendChild(div);
-  box.scrollTop = box.scrollHeight;
-}
 
 document.getElementById("user-input").addEventListener("keydown", function(event) {
   if (event.key === "Enter") {
@@ -81,24 +68,18 @@ document.getElementById("user-input").addEventListener("keydown", function(event
 
 let lastAiResponse = '';
 
-async function sendMessage() {
-  const input = document.getElementById('user-input').value;
-  if (!input) return;
+function sendMessage() {
+  const input = document.getElementById("user-input");
+  const text = input.value.trim();
+  if (!text) return;
 
-  appendMessage('🧑‍💻 あなた: ' + input);
-  document.getElementById('user-input').value = '';
+  addMessage(text, "user");
 
-  const res = await fetch('/chat', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: input ,customSessionID: customSessionID // ← ここを追加
-})
-  });
+  input.value = "";
 
-  const data = await res.json();
-  appendMessage('🤖 AI: ' + data.response);
-  lastAiResponse = data.response; // 直近のAI応答を保存
+  fetchBotResponse(text);
 }
+
 
 // ...existing code...
 
