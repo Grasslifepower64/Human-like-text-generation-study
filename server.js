@@ -1,4 +1,3 @@
-// server.js
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -7,20 +6,18 @@ const path = require('path');
 const session = require('express-session');
 const { generatePrompt, generateSettings } = require('./promptGenerator');
 const { queryOpenAI } = require('./openai');
-const { connectDB } = require('./db'); // ← 修正済み
+const { connectDB } = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// JSON バックアップ用（任意）
+// JSON バックアップ用
 const LOG_FILE = path.join(__dirname, 'logs', 'all_sessions.json');
 const FEEDBACK_FILE = path.join(__dirname, 'logs', 'feedback.json');
 
-// フォルダ作成
 const logDir = path.join(__dirname, 'logs');
 if (!fs.existsSync(logDir)) fs.mkdirSync(logDir);
 
-// セッション
 app.use(session({
   secret: 'your-secret-key',
   resave: false,
@@ -30,14 +27,11 @@ app.use(session({
 
 app.use(bodyParser.json());
 app.use(express.static('public'));
-
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// -------------------------------
-// セッション初期化
-// -------------------------------
+// セッション初期化（同じ）
 function initializeSession(req) {
   const incomingID = req.body.customSessionID;
 
@@ -68,9 +62,7 @@ function initializeSession(req) {
   }
 }
 
-// -------------------------------
-// チャット API
-// -------------------------------
+// チャット受信
 app.post('/chat', async (req, res) => {
   const userInput = req.body.message;
   const customSessionID = req.body.customSessionID;
@@ -93,9 +85,7 @@ app.post('/chat', async (req, res) => {
 
   sessionData.conversation.push({ userInput, aiResponse });
 
-  // -------------------------
-  // ✅ MongoDB 保存
-  // -------------------------
+  // MongoDB に保存（sessions コレクション）
   try {
     const db = await connectDB();
     const sessions = db.collection("sessions");
@@ -122,7 +112,7 @@ app.post('/chat', async (req, res) => {
     console.error("❌ MongoDB save error:", err);
   }
 
-  // JSON バックアップ
+  // JSON バックアップ（任意）
   if (fs.existsSync(LOG_FILE)) {
     const allLogs = JSON.parse(fs.readFileSync(LOG_FILE, 'utf8'));
     const sessionLog = allLogs.find(log => log.sessionID === customSessionID);
@@ -135,14 +125,13 @@ app.post('/chat', async (req, res) => {
   res.json({ response: aiResponse });
 });
 
-// -------------------------------
-// フィードバック保存
-// -------------------------------
+// フィードバック受信（sessionID を受け取る）
 app.post('/feedback', async (req, res) => {
-  const { aiResponse, rating, comment } = req.body;
+  const { aiResponse, rating, comment, customSessionID } = req.body;
 
   const feedback = {
     timestamp: new Date().toISOString(),
+    sessionID: customSessionID || null,
     aiResponse,
     rating,
     comment
@@ -151,7 +140,6 @@ app.post('/feedback', async (req, res) => {
   try {
     const db = await connectDB();
     const feedbacks = db.collection("feedbacks");
-
     await feedbacks.insertOne(feedback);
   } catch (err) {
     console.error("❌ MongoDB feedback save error:", err);
@@ -168,7 +156,23 @@ app.post('/feedback', async (req, res) => {
   res.json({ status: 'ok' });
 });
 
-// -------------------------------
+// セッション設定を返す API
+app.get('/session-settings', async (req, res) => {
+  const sessionID = req.query.sessionID;
+  if (!sessionID) return res.json({ error: 'no sessionID' });
+
+  try {
+    const db = await connectDB();
+    const sessionDoc = await db.collection("sessions").findOne({ sessionID });
+    if (!sessionDoc) {
+      return res.json({ error: 'not found' });
+    }
+    return res.json(sessionDoc.promptSettings || {});
+  } catch (err) {
+    console.error("❌ session-settings error:", err);
+    res.status(500).json({ error: 'internal' });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);

@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+  <meta charset="utf-8" />
   <meta name="robots" content="noindex, nofollow">
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- ★スマホ対応必須 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 必須 -->
   <title>Airチャット</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-  <!-- タイトル画面 -->
+  <!-- タイトル / スタート -->
   <div id="start-screen" class="center-screen">
     <img src="Airchat_rogo.png" alt="Airチャット" class="logo"/>
     <h1>Airチャット</h1>
@@ -20,37 +19,35 @@
   <div id="consent-modal" class="modal">
     <div class="modal-content">
       <h2>利用に関するご案内</h2>
-      <p>
-        このアプリでは、会話ログなどを研究目的で使用する可能性があります。<br>
-        ご同意いただける場合のみご利用ください。
-      </p>
+      <p>このアプリでは、会話ログなどを研究目的で使用する可能性があります。ご同意いただける場合のみご利用ください。</p>
       <button onclick="acceptConsent()" class="main-button">同意する</button>
     </div>
   </div>
 
   <!-- チャット画面 -->
   <div id="chat-screen" class="hidden">
-
     <h1 class="page-title">AIと会話してみよう</h1>
 
-    <div id="chat-box" class="chat-box"></div>
+    <div id="chat-box" class="chat-box" aria-live="polite"></div>
 
     <div class="input-area">
-      <input type="text" id="user-input" placeholder="メッセージを入力..." />
-      <button onclick="sendMessage()" class="main-button">送信</button>
+      <input type="text" id="user-input" placeholder="メッセージを入力..." autocomplete="off" />
+      <button id="send-btn" class="main-button">送信</button>
     </div>
 
-    <!-- フィードバック -->
+    <!-- フィードバック / 誘導 -->
     <div id="feedback-section" class="feedback">
-      <span>人らしかった？</span>
-      <button id="thumbs-up" class="icon-btn">👍</button>
-      <button id="thumbs-down" class="icon-btn">👎</button>
+      <div id="feedback-hint">会話が終わったらフィードバックを送ると、この会話のAI設定を表示します！</div>
+      <div class="thumbs">
+        <button id="thumbs-up" class="icon-btn">👍</button>
+        <button id="thumbs-down" class="icon-btn">👎</button>
+      </div>
       <input type="text" id="feedback-comment" placeholder="コメント（任意）" />
       <button id="send-feedback" class="main-button small">フィードバック送信</button>
     </div>
-
   </div>
 
   <script src="script.js"></script>
 </body>
 </html>
+

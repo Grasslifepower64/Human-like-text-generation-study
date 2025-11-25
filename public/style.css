@@ -1,110 +1,177 @@
-/* 全体 */
+/* base */
+* { box-sizing: border-box; }
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
-  background: #e5e5e5;
-  color: #333;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: #f0f2f5;
+  color: #111;
 }
 
-* {
-  box-sizing: border-box;
+/* center start */
+.center-screen {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
 }
 
-/* チャット画面 */
+.logo {
+  width: 58%;
+  max-width: 220px;
+  height: auto;
+  margin-bottom: 18px;
+}
+
+.page-title {
+  text-align: center;
+  margin: 14px 0;
+  font-size: 1.4rem;
+}
+
+/* chat box */
 .chat-box {
-  width: 90%;
-  max-width: 600px;
-  height: 60vh;
-  background: #f0f0f0;
-  margin: 0 auto 20px auto;
-  padding: 10px;
-  border-radius: 10px;
+  width: 94%;
+  max-width: 720px;
+  height: 58vh;
+  margin: 8px auto;
+  background: #e9eef3;
+  border-radius: 14px;
+  padding: 12px;
   overflow-y: auto;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  font-size: 1rem;
 }
 
-/* ------ LINE風 吹き出し ------ */
+/* message wrapper */
 .message {
   display: flex;
-  margin: 10px 0;
-  width: 100%;
+  margin: 10px 6px;
+  align-items: flex-end;
 }
 
-.message.user {
-  justify-content: flex-end;
-}
+/* bot left, user right */
+.message.bot { justify-content: flex-start; }
+.message.user { justify-content: flex-end; }
 
-.message.bot {
-  justify-content: flex-start;
-}
-
+/* bubble */
 .bubble {
-  max-width: 70%;
+  max-width: 78%;
   padding: 10px 14px;
-  border-radius: 14px;
-  font-size: 1rem;
+  border-radius: 16px;
   line-height: 1.4;
   word-break: break-word;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  font-size: 1rem;
 }
 
-/* Bot: 白 + 左 */
+/* bot bubble style */
 .message.bot .bubble {
   background: #ffffff;
-  border-radius: 14px 14px 14px 0;
+  color: #111;
+  border-radius: 16px 16px 16px 4px;
 }
 
-/* User: 緑 + 右 */
+/* user bubble style */
 .message.user .bubble {
-  background: #8fe28f;
-  color: #000;
-  border-radius: 14px 14px 0 14px;
+  background: #57d87b;
+  color: #04250f;
+  border-radius: 16px 16px 4px 16px;
 }
 
-/* 入力欄 */
+/* input area */
 .input-area {
-  width: 90%;
-  max-width: 600px;
-  margin: 0 auto 20px auto;
+  width: 94%;
+  max-width: 720px;
+  margin: 0 auto 14px;
   display: flex;
   gap: 10px;
+  padding: 0 3%;
 }
 
 .input-area input {
   flex: 1;
   padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #d0d7de;
   font-size: 1rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
 }
 
+/* main button */
 .main-button {
-  padding: 12px 16px;
   background: #007bff;
-  color: white;
+  color: #fff;
   border: none;
-  border-radius: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
   font-size: 1rem;
 }
 
-/* フィードバック部分 */
+/* feedback */
 .feedback {
-  width: 90%;
-  max-width: 600px;
-  margin: 0 auto 40px auto;
-  text-align: center;
+  width: 94%;
+  max-width: 720px;
+  margin: 10px auto 40px;
+  padding: 12px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+}
+
+.feedback .thumbs {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .icon-btn {
-  font-size: 1.8rem;
+  font-size: 1.3rem;
   background: none;
   border: none;
+  cursor: pointer;
 }
 
 .icon-btn.selected {
-  background: #ffd700;
-  border-radius: 8px;
+  background: #ffd54a;
+  border-radius: 6px;
+  padding: 6px;
 }
+
+/* modal */
+.modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.45);
+  z-index: 9999;
+}
+
+.modal-content {
+  width: 86%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px;
+  text-align: center;
+}
+
+/* hidden helper */
+.hidden { display: none; }
+
+/* small screens */
+@media (max-width: 420px) {
+  .logo { width: 70%; }
+  .chat-box { height: 60vh; padding: 10px; }
+  .page-title { font-size: 1.1rem; }
+  .bubble { font-size: 0.98rem; }
+  .input-area input { padding: 10px; }
+}
+
