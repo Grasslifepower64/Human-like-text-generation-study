@@ -3,46 +3,76 @@
 <head>
   <meta charset="utf-8" />
   <meta name="robots" content="noindex, nofollow">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 必須 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Airチャット</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- タイトル / スタート -->
+
+  <!-- スタート画面 -->
   <div id="start-screen" class="center-screen">
-    <img src="Airchat_rogo.png" alt="Airチャット" class="logo"/>
+    <img src="Airchat_rogo.png" class="logo" />
     <h1>Airチャット</h1>
     <p>Enterキーまたはタップでスタート</p>
   </div>
 
-  <!-- 同意モーダル -->
+  <!-- 同意 -->
   <div id="consent-modal" class="modal">
     <div class="modal-content">
       <h2>利用に関するご案内</h2>
-      <p>このアプリでは、会話ログなどを研究目的で使用する可能性があります。ご同意いただける場合のみご利用ください。</p>
+      <p>このアプリでは会話ログを研究目的で利用します。</p>
       <button onclick="acceptConsent()" class="main-button">同意する</button>
     </div>
   </div>
 
-  <!-- チャット画面 -->
+  <!-- チャット -->
   <div id="chat-screen" class="hidden">
     <h1 class="page-title">AIと会話してみよう</h1>
 
-    <div id="chat-box" class="chat-box" aria-live="polite"></div>
+    <div id="chat-box" class="chat-box"></div>
 
     <div class="input-area">
-      <input type="text" id="user-input" placeholder="メッセージを入力..." autocomplete="off" />
+      <input id="user-input" type="text" placeholder="メッセージを入力…" />
       <button id="send-btn" class="main-button">送信</button>
     </div>
 
-    <!-- フィードバック / 誘導 -->
+    <div class="end-area">
+      <button id="end-btn" class="end-button">お別れする</button>
+    </div>
+
+    <!-- フィードバック -->
     <div id="feedback-section" class="feedback">
-      <div id="feedback-hint">会話が終わったらフィードバックを送ると、この会話のAI設定を表示します！</div>
-      <div class="thumbs">
-        <button id="thumbs-up" class="icon-btn">👍</button>
-        <button id="thumbs-down" class="icon-btn">👎</button>
+      <h3>このAIはどれくらい人らしかった？</h3>
+
+      <div class="scale">
+        <button class="scale-btn" data-value="1">1</button>
+        <button class="scale-btn" data-value="2">2</button>
+        <button class="scale-btn" data-value="3">3</button>
+        <button class="scale-btn" data-value="4">4</button>
+        <button class="scale-btn" data-value="5">5</button>
+        <button class="scale-btn" data-value="6">6</button>
+        <button class="scale-btn" data-value="7">7</button>
+        <button class="scale-btn" data-value="8">8</button>
+        <button class="scale-btn" data-value="9">9</button>
+        <button class="scale-btn" data-value="10">10</button>
       </div>
-      <input type="text" id="feedback-comment" placeholder="コメント（任意）" />
+
+      <ul class="rating-scale">
+        <li>1：全く人らしくない</li>
+        <li>4：違和感が目立つ</li>
+        <li>7：多少違和感はあるが人らしい</li>
+        <li>10：人と遜色ない</li>
+      </ul>
+
+      <h4>あなたの性別（必須）</h4>
+      <select id="gender-select">
+        <option value="">選択してください</option>
+        <option value="male">男性</option>
+        <option value="female">女性</option>
+        <option value="no_answer">回答しない</option>
+      </select>
+
+      <input id="feedback-comment" type="text" placeholder="コメント（任意）" />
       <button id="send-feedback" class="main-button small">フィードバック送信</button>
     </div>
   </div>
@@ -50,4 +80,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-

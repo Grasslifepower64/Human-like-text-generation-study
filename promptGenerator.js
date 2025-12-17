@@ -56,19 +56,6 @@ function buildSystemInstruction(settings) {
 }
 
 
-
-/*
-function generatePrompt(userInput, settings) {
-  const systemInstruction = buildSystemInstruction(settings);
-
-  return `
-${systemInstruction}
-以下の発言に返答してください：
-「${userInput}」
-`;
-}
-*/
-
 function generatePrompt(userInput, settings) {
   const systemInstruction = buildSystemInstruction(settings);
   const userMessage = `以下の発言に返答してください：\n「${userInput}」`;
