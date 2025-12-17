@@ -3,153 +3,127 @@ if (!sessionStorage.getItem('customSessionID')) {
 }
 const customSessionID = sessionStorage.getItem('customSessionID');
 
-let lastAiResponse = '';
-let endTimer = null;
+let selectedScore = null;
+let conversationEnded = false;
 
+// ===== 起動 =====
 window.onload = () => {
-  document.addEventListener('keydown', startApp);
-  document.addEventListener('click', startApp);
+  document.addEventListener("keydown", startApp);
+  document.addEventListener("click", startApp);
 
-  document.getElementById('send-btn').onclick = sendMessage;
-  document.getElementById('end-btn').onclick = endConversation;
-  document.getElementById('send-feedback').onclick = sendFeedback;
+  document.getElementById("send-btn").onclick = sendMessage;
+  document.getElementById("end-btn").onclick = endConversation;
+  document.getElementById("send-feedback").onclick = sendFeedback;
 
-  document.querySelectorAll('.scale-btn').forEach(btn => {
+  document.querySelectorAll(".scale-btn").forEach(btn => {
     btn.onclick = () => {
-      document.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
+      document.querySelectorAll(".scale-btn").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      selectedScore = btn.dataset.value;
     };
   });
 };
 
+// ===== スタート =====
 function startApp() {
-  document.removeEventListener('keydown', startApp);
-  document.removeEventListener('click', startApp);
+  document.removeEventListener("keydown", startApp);
+  document.removeEventListener("click", startApp);
+  document.getElementById("start-screen").style.display = "none";
 
-  document.getElementById('start-screen').style.display = 'none';
-
-  if (!localStorage.getItem('consentGiven')) {
-    document.getElementById('consent-modal').style.display = 'flex';
+  if (!localStorage.getItem("consentGiven")) {
+    document.getElementById("consent-modal").style.display = "flex";
   } else {
-    showChat();
+    document.getElementById("chat-screen").classList.remove("hidden");
+    appendMessage("こんにちは！自由に話しかけてください。", "bot");
   }
 }
 
 function acceptConsent() {
-  localStorage.setItem('consentGiven', 'yes');
-  document.getElementById('consent-modal').style.display = 'none';
-  showChat();
+  localStorage.setItem("consentGiven", "true");
+  document.getElementById("consent-modal").style.display = "none";
+  document.getElementById("chat-screen").classList.remove("hidden");
+  appendMessage("こんにちは！自由に話しかけてください。", "bot");
 }
 
-function showChat() {
-  document.getElementById('chat-screen').classList.remove('hidden');
-  appendMessage('やあ。今日は少しお話ししよう。気軽に話してね。', 'bot');
-}
-
-function appendMessage(text, who) {
-  const box = document.getElementById('chat-box');
-  const wrap = document.createElement('div');
-  wrap.className = `message ${who}`;
-  const bub = document.createElement('div');
-  bub.className = 'bubble';
-  bub.innerText = text;
-  wrap.appendChild(bub);
+// ===== メッセージ =====
+function appendMessage(text, sender) {
+  const box = document.getElementById("chat-box");
+  const wrap = document.createElement("div");
+  wrap.className = `message ${sender}`;
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+  bubble.innerText = text;
+  wrap.appendChild(bubble);
   box.appendChild(wrap);
   box.scrollTop = box.scrollHeight;
 }
 
+// ===== 会話 =====
 async function sendMessage() {
-  const input = document.getElementById('user-input');
-  if (!input.value) return;
+  if (conversationEnded) return;
 
-  appendMessage(input.value, 'user');
-  const text = input.value;
-  input.value = '';
+  const input = document.getElementById("user-input");
+  const text = input.value.trim();
+  if (!text) return;
 
-  const res = await fetch('/chat', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
+  appendMessage(text, "user");
+  input.value = "";
+
+  const res = await fetch("/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ message: text, customSessionID })
   });
+
   const data = await res.json();
-  appendMessage(data.response, 'bot');
-  lastAiResponse = data.response;
-
-  resetEndTimer();
+  appendMessage(data.response, "bot");
 }
 
-function resetEndTimer() {
-  clearTimeout(endTimer);
-  endTimer = setTimeout(() => {
-    document.getElementById('feedback-section')
-      .scrollIntoView({behavior:'smooth'});
-  }, 30000);
-}
-
+// ===== 終了 =====
 function endConversation() {
-  clearTimeout(endTimer);
-  document.getElementById('feedback-section')
-    .scrollIntoView({behavior:'smooth'});
+  conversationEnded = true;
+  document.getElementById("user-input").disabled = true;
+  document.getElementById("send-btn").disabled = true;
+
+  document.getElementById("feedback-section").scrollIntoView({ behavior: "smooth" });
 }
 
+// ===== フィードバック =====
 async function sendFeedback() {
-  const btn = document.getElementById('send-feedback');
-  if (btn.disabled) return;
+  if (!selectedScore) return alert("評価を選択してください");
+  const gender = document.getElementById("gender-select").value;
+  if (!gender) return alert("性別を選択してください");
 
-  const scoreBtn = document.querySelector('.scale-btn.selected');
-  const gender = document.getElementById('gender-select').value;
-
-  if (!scoreBtn || !gender) {
-    alert('評価と性別を選択してください');
-    return;
-  }
-
+  const btn = document.getElementById("send-feedback");
+  btn.innerText = "送信中…";
   btn.disabled = true;
-  btn.innerText = '送信中…';
 
-  await fetch('/feedback', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
+  await fetch("/feedback", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      customSessionID,
-      score: scoreBtn.dataset.value,
+      sessionID: customSessionID,
+      score: selectedScore,
       gender,
-      comment: document.getElementById('feedback-comment').value,
-      aiResponse: lastAiResponse
+      comment: document.getElementById("feedback-comment").value
     })
   });
 
-  // 🔽 ① 上に自動スクロール
-  document.getElementById('chat-box')
-    .scrollIntoView({ behavior: 'smooth', block: 'start' });
+  btn.innerText = "送信済み ✓";
 
-  appendMessage('ありがとう。実はこのAIは…', 'bot');
+  document.getElementById("chat-box").scrollTop = 0;
 
-  // 設定表示
-  setTimeout(showSettings, 600);
-
-  // 🔽 ② 3秒後にトースト表示
-  setTimeout(showToast, 3000);
+  setTimeout(() => {
+    appendMessage("✨ ご協力ありがとうございました！ ✨", "bot");
+    showSettings();
+  }, 3000);
 }
 
 async function showSettings() {
   const res = await fetch(`/session-settings?sessionID=${customSessionID}`);
   const s = await res.json();
-
   appendMessage(
-    `方言:${s.dialect}\n共感:${s.empathy}\n文法:${s.grammarNoise}\n感情:${s.emotionIntensity}\n語尾:${s.wordEnding}`,
-    'bot'
+    `このAIの設定\n方言:${s.dialect}\n共感:${s.empathy}\n文法:${s.grammarNoise}\n感情:${s.emotionIntensity}\n語尾:${s.wordEnding}`,
+    "bot"
   );
-}
-
-/* トースト表示 */
-function showToast() {
-  const toast = document.getElementById('toast');
-  toast.classList.remove('hidden');
-  toast.classList.add('show');
-
-  setTimeout(() => {
-    toast.classList.remove('show');
-    setTimeout(() => toast.classList.add('hidden'), 600);
-  }, 2500);
 }

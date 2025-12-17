@@ -2,32 +2,50 @@
 
 body {
   margin: 0;
-  font-family: system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
   background: #f0f2f5;
 }
 
-/* start */
+/* ===== スタート ===== */
 .center-screen {
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
+  padding: 20px;
 }
 
-.logo { width: 200px; }
+.logo {
+  max-width: 220px;
+  margin-bottom: 16px;
+}
 
-/* chat */
+.flow-box {
+  background: #fff;
+  padding: 14px;
+  border-radius: 12px;
+  margin: 10px 0;
+  font-size: 0.95rem;
+}
+
+.start-hint {
+  margin-top: 10px;
+  color: #555;
+}
+
+/* ===== チャット ===== */
 .page-title {
   text-align: center;
-  margin: 10px;
+  margin: 12px 0;
 }
 
 .chat-box {
-  height: 60vh;
-  margin: 10px auto;
   width: 94%;
   max-width: 720px;
+  height: 58vh;
+  margin: auto;
   background: #e9eef3;
   border-radius: 14px;
   padding: 12px;
@@ -39,124 +57,107 @@ body {
   margin: 8px;
 }
 
-.message.bot { justify-content: flex-start; }
 .message.user { justify-content: flex-end; }
+.message.bot { justify-content: flex-start; }
 
 .bubble {
+  max-width: 78%;
   padding: 10px 14px;
   border-radius: 16px;
-  max-width: 75%;
-}
-
-.message.bot .bubble {
-  background: #fff;
 }
 
 .message.user .bubble {
   background: #57d87b;
 }
 
-/* input */
+.message.bot .bubble {
+  background: #fff;
+}
+
+/* ===== 入力 ===== */
 .input-area {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   width: 94%;
   max-width: 720px;
-  margin: auto;
+  margin: 8px auto;
 }
 
 input {
   flex: 1;
   padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
 }
 
-/* buttons */
 .main-button {
   background: #007bff;
-  color: white;
+  color: #fff;
   border: none;
-  padding: 10px;
-  border-radius: 8px;
+  border-radius: 10px;
+  padding: 10px 14px;
 }
 
 .end-area {
   text-align: center;
-  margin: 10px;
+  margin: 6px;
 }
 
 .end-button {
-  background: #ccc;
-  border: none;
-  padding: 8px 16px;
+  background: #888;
+  color: #fff;
   border-radius: 8px;
+  border: none;
+  padding: 8px 14px;
 }
 
-/* feedback */
+/* ===== フィードバック ===== */
 .feedback {
   width: 94%;
   max-width: 720px;
   margin: 20px auto;
-  background: white;
   padding: 14px;
+  background: #fff;
   border-radius: 12px;
+}
+
+.feedback-title {
+  margin-bottom: 6px;
 }
 
 .scale {
   display: flex;
-  gap: 6px;
   flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
 }
 
 .scale-btn {
-  flex: 1;
-  padding: 6px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  background: #fff;
 }
 
 .scale-btn.selected {
-  background: gold;
+  background: #ffd54a;
 }
 
 .hidden { display: none; }
 
-/* modal */
+/* ===== モーダル ===== */
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,.45);
   display: none;
   justify-content: center;
   align-items: center;
 }
 
 .modal-content {
-  background: white;
+  background: #fff;
   padding: 20px;
   border-radius: 12px;
-}
-
-/* トースト通知 */
-.toast {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #007bff;
-  color: #fff;
-  padding: 14px 22px;
-  border-radius: 24px;
-  font-size: 1rem;
-  font-weight: bold;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-  z-index: 9999;
-  opacity: 0;
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-.toast.hidden {
-  display: none;
+  text-align: center;
 }

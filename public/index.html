@@ -9,81 +9,81 @@
 </head>
 <body>
 
-  <!-- トースト通知 -->
-  <div id="toast" class="toast hidden">
-    ご協力ありがとうございました
+<!-- ===== スタート画面 ===== -->
+<div id="start-screen" class="center-screen">
+  <img src="Airchat_rogo.png" alt="Airチャット" class="logo"/>
+  <h1>Airチャット</h1>
+
+  <div class="flow-box">
+    <p>① AIと自由に会話する</p>
+    <p>② 会話終了後、フィードバックを送信</p>
+    <p>③ このAIの「本当の設定」を確認</p>
   </div>
 
-  <!-- スタート画面 -->
-  <div id="start-screen" class="center-screen">
-    <img src="Airchat_rogo.png" class="logo" />
-    <h1>Airチャット</h1>
-    <p>Enterキーまたはタップでスタート</p>
+  <p class="start-hint">Enterキー または タップでスタート</p>
+</div>
+
+<!-- ===== 同意モーダル ===== -->
+<div id="consent-modal" class="modal">
+  <div class="modal-content">
+    <h2>利用に関するご案内</h2>
+    <p>このアプリでは会話ログ・回答を研究目的で利用します。</p>
+    <button onclick="acceptConsent()" class="main-button">同意する</button>
+  </div>
+</div>
+
+<!-- ===== チャット画面 ===== -->
+<div id="chat-screen" class="hidden">
+  <h1 class="page-title">AIと会話してみよう</h1>
+
+  <div id="chat-box" class="chat-box"></div>
+
+  <div class="input-area">
+    <input type="text" id="user-input" placeholder="メッセージを入力..." />
+    <button id="send-btn" class="main-button">送信</button>
   </div>
 
-  <!-- 同意モーダル -->
-  <div id="consent-modal" class="modal">
-    <div class="modal-content">
-      <h2>ご案内</h2>
-      <p>会話ログは研究目的で使用されます。</p>
-      <button class="main-button" onclick="acceptConsent()">同意する</button>
-    </div>
+  <div class="end-area">
+    <button id="end-btn" class="end-button">お別れする</button>
   </div>
 
-  <!-- チャット画面 -->
-  <div id="chat-screen" class="hidden">
+  <!-- ===== フィードバック ===== -->
+  <div id="feedback-section" class="feedback">
+    <h3 class="feedback-title">会話終了後、以下のアンケートにご回答ください</h3>
 
-    <h1 class="page-title">AIと会話してみよう</h1>
+    <p class="scale-guide">
+      1：全く人らしくない /  
+      4：違和感が目立つ /  
+      7：多少違和感はあるが人らしい /  
+      10：人と遜色ない
+    </p>
 
-    <div id="chat-box" class="chat-box"></div>
-
-    <div class="input-area">
-      <input id="user-input" type="text" placeholder="メッセージを入力..." />
-      <button id="send-btn" class="main-button">送信</button>
+    <div class="scale">
+      <button class="scale-btn" data-value="1">1</button>
+      <button class="scale-btn" data-value="2">2</button>
+      <button class="scale-btn" data-value="3">3</button>
+      <button class="scale-btn" data-value="4">4</button>
+      <button class="scale-btn" data-value="5">5</button>
+      <button class="scale-btn" data-value="6">6</button>
+      <button class="scale-btn" data-value="7">7</button>
+      <button class="scale-btn" data-value="8">8</button>
+      <button class="scale-btn" data-value="9">9</button>
+      <button class="scale-btn" data-value="10">10</button>
     </div>
 
-    <div class="end-area">
-      <button id="end-btn" class="end-button">お別れする</button>
-    </div>
+    <label>あなたの性別（必須）</label>
+    <select id="gender-select">
+      <option value="">選択してください</option>
+      <option value="male">男性</option>
+      <option value="female">女性</option>
+      <option value="no_answer">回答しない</option>
+    </select>
 
-    <!-- フィードバック -->
-    <div id="feedback-section" class="feedback">
-      <h3>このAIはどれくらい人らしかった？</h3>
-
-      <div class="scale-desc">
-        <p>1：全く人らしくない</p>
-        <p>4：違和感が目立つ</p>
-        <p>7：多少違和感はあるが人らしい</p>
-        <p>10：人と遜色ない</p>
-      </div>
-
-      <div class="scale">
-        <button class="scale-btn" data-value="1">1</button>
-        <button class="scale-btn" data-value="2">2</button>
-        <button class="scale-btn" data-value="3">3</button>
-        <button class="scale-btn" data-value="4">4</button>
-        <button class="scale-btn" data-value="5">5</button>
-        <button class="scale-btn" data-value="6">6</button>
-        <button class="scale-btn" data-value="7">7</button>
-        <button class="scale-btn" data-value="8">8</button>
-        <button class="scale-btn" data-value="9">9</button>
-        <button class="scale-btn" data-value="10">10</button>
-      </div>
-
-      <h4>あなたの性別（必須）</h4>
-      <select id="gender-select">
-        <option value="">選択してください</option>
-        <option value="male">男性</option>
-        <option value="female">女性</option>
-        <option value="no_answer">回答しない</option>
-      </select>
-
-      <input id="feedback-comment" type="text" placeholder="コメント（任意）" />
-      <button id="send-feedback" class="main-button small">フィードバック送信</button>
-    </div>
-
+    <input type="text" id="feedback-comment" placeholder="コメント（任意）" />
+    <button id="send-feedback" class="main-button small">フィードバック送信</button>
   </div>
+</div>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
