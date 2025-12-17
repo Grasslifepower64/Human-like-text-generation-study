@@ -9,6 +9,11 @@
 </head>
 <body>
 
+  <!-- トースト通知 -->
+  <div id="toast" class="toast hidden">
+    ご協力ありがとうございました
+  </div>
+
   <!-- スタート画面 -->
   <div id="start-screen" class="center-screen">
     <img src="Airchat_rogo.png" class="logo" />
@@ -37,7 +42,6 @@
       <button id="send-btn" class="main-button">送信</button>
     </div>
 
-    <!-- 会話終了 -->
     <div class="end-area">
       <button id="end-btn" class="end-button">お別れする</button>
     </div>
@@ -66,7 +70,7 @@
         <button class="scale-btn" data-value="10">10</button>
       </div>
 
-      <h4>あなたの性別</h4>
+      <h4>あなたの性別（必須）</h4>
       <select id="gender-select">
         <option value="">選択してください</option>
         <option value="male">男性</option>

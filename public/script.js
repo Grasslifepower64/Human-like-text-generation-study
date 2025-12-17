@@ -81,13 +81,15 @@ async function sendMessage() {
 function resetEndTimer() {
   clearTimeout(endTimer);
   endTimer = setTimeout(() => {
-    document.getElementById('feedback-section').scrollIntoView({behavior:'smooth'});
+    document.getElementById('feedback-section')
+      .scrollIntoView({behavior:'smooth'});
   }, 30000);
 }
 
 function endConversation() {
   clearTimeout(endTimer);
-  document.getElementById('feedback-section').scrollIntoView({behavior:'smooth'});
+  document.getElementById('feedback-section')
+    .scrollIntoView({behavior:'smooth'});
 }
 
 async function sendFeedback() {
@@ -117,9 +119,17 @@ async function sendFeedback() {
     })
   });
 
+  // 🔽 ① 上に自動スクロール
+  document.getElementById('chat-box')
+    .scrollIntoView({ behavior: 'smooth', block: 'start' });
+
   appendMessage('ありがとう。実はこのAIは…', 'bot');
 
+  // 設定表示
   setTimeout(showSettings, 600);
+
+  // 🔽 ② 3秒後にトースト表示
+  setTimeout(showToast, 3000);
 }
 
 async function showSettings() {
@@ -130,4 +140,16 @@ async function showSettings() {
     `方言:${s.dialect}\n共感:${s.empathy}\n文法:${s.grammarNoise}\n感情:${s.emotionIntensity}\n語尾:${s.wordEnding}`,
     'bot'
   );
+}
+
+/* トースト表示 */
+function showToast() {
+  const toast = document.getElementById('toast');
+  toast.classList.remove('hidden');
+  toast.classList.add('show');
+
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.classList.add('hidden'), 600);
+  }, 2500);
 }
