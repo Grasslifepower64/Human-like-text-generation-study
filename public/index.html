@@ -16,26 +16,28 @@
     <p>Enterキーまたはタップでスタート</p>
   </div>
 
-  <!-- 同意 -->
+  <!-- 同意モーダル -->
   <div id="consent-modal" class="modal">
     <div class="modal-content">
-      <h2>利用に関するご案内</h2>
-      <p>このアプリでは会話ログを研究目的で利用します。</p>
-      <button onclick="acceptConsent()" class="main-button">同意する</button>
+      <h2>ご案内</h2>
+      <p>会話ログは研究目的で使用されます。</p>
+      <button class="main-button" onclick="acceptConsent()">同意する</button>
     </div>
   </div>
 
-  <!-- チャット -->
+  <!-- チャット画面 -->
   <div id="chat-screen" class="hidden">
+
     <h1 class="page-title">AIと会話してみよう</h1>
 
     <div id="chat-box" class="chat-box"></div>
 
     <div class="input-area">
-      <input id="user-input" type="text" placeholder="メッセージを入力…" />
+      <input id="user-input" type="text" placeholder="メッセージを入力..." />
       <button id="send-btn" class="main-button">送信</button>
     </div>
 
+    <!-- 会話終了 -->
     <div class="end-area">
       <button id="end-btn" class="end-button">お別れする</button>
     </div>
@@ -43,6 +45,13 @@
     <!-- フィードバック -->
     <div id="feedback-section" class="feedback">
       <h3>このAIはどれくらい人らしかった？</h3>
+
+      <div class="scale-desc">
+        <p>1：全く人らしくない</p>
+        <p>4：違和感が目立つ</p>
+        <p>7：多少違和感はあるが人らしい</p>
+        <p>10：人と遜色ない</p>
+      </div>
 
       <div class="scale">
         <button class="scale-btn" data-value="1">1</button>
@@ -57,14 +66,7 @@
         <button class="scale-btn" data-value="10">10</button>
       </div>
 
-      <ul class="rating-scale">
-        <li>1：全く人らしくない</li>
-        <li>4：違和感が目立つ</li>
-        <li>7：多少違和感はあるが人らしい</li>
-        <li>10：人と遜色ない</li>
-      </ul>
-
-      <h4>あなたの性別（必須）</h4>
+      <h4>あなたの性別</h4>
       <select id="gender-select">
         <option value="">選択してください</option>
         <option value="male">男性</option>
@@ -75,6 +77,7 @@
       <input id="feedback-comment" type="text" placeholder="コメント（任意）" />
       <button id="send-feedback" class="main-button small">フィードバック送信</button>
     </div>
+
   </div>
 
   <script src="script.js"></script>
