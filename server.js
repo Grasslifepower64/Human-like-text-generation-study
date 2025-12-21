@@ -56,6 +56,7 @@ app.post('/chat', async (req, res) => {
   res.json({ response: ai });
 });
 
+/*
 // フィードバック
 app.post('/feedback', async (req, res) => {
   const db = await connectDB();
@@ -72,5 +73,44 @@ app.get('/session-settings', async (req, res) => {
   const s = await db.collection("sessions").findOne({ sessionID: req.query.sessionID });
   res.json(s?.promptSettings || {});
 });
+*/
+
+
+
+app.post('/feedback', async (req, res) => {
+  const { sessionID, score, gender, comment } = req.body;
+  if (!sessionID || !score || !gender) {
+    return res.status(400).json({ error: "invalid" });
+  }
+
+  const db = await connectDB();
+
+  await db.collection("sessions").updateOne(
+    { sessionID },
+    {
+      $set: {
+        feedback: {
+          score: Number(score),
+          gender,
+          comment: comment || "",
+          createdAt: new Date()
+        }
+      }
+    }
+  );
+
+  res.json({ status: "ok" });
+});
+
+app.get('/session-settings', async (req, res) => {
+  const db = await connectDB();
+  const s = await db.collection("sessions").findOne(
+    { sessionID: req.query.sessionID },
+    { projection: { promptSettings: 1 } }
+  );
+  res.json(s?.promptSettings || {});
+});
+
+
 
 app.listen(PORT, () => console.log("🚀 Server running"));

@@ -15,9 +15,9 @@
   <h1>Airチャット</h1>
 
   <div class="flow-box">
-    <p>① AIと自由に会話する</p>
-    <p>② 会話終了後、フィードバックを送信</p>
-    <p>③ このAIの「本当の設定」を確認</p>
+    <p>① ランダムな特徴のAIと自由に会話する</p>
+    <p>② 会話終了後、アンケート回答</p>
+    <p>③ このAIの「特徴の設定」を確認</p>
   </div>
 
   <p class="start-hint">Enterキー または タップでスタート</p>
@@ -27,7 +27,7 @@
 <div id="consent-modal" class="modal">
   <div class="modal-content">
     <h2>利用に関するご案内</h2>
-    <p>このアプリでは会話ログ・回答を研究目的で利用します。</p>
+    <p>このアプリでは会話ログ(AI側の回答のみ)・アンケートを研究目的で利用します。</p>
     <button onclick="acceptConsent()" class="main-button">同意する</button>
   </div>
 </div>
@@ -51,12 +51,7 @@
   <div id="feedback-section" class="feedback">
     <h3 class="feedback-title">会話終了後、以下のアンケートにご回答ください</h3>
 
-    <p class="scale-guide">
-      1：全く人らしくない /  
-      4：違和感が目立つ /  
-      7：多少違和感はあるが人らしい /  
-      10：人と遜色ない
-    </p>
+    <h4 class="scale-guide">会話した相手は人らしかった？</h4>
 
     <div class="scale">
       <button class="scale-btn" data-value="1">1</button>
@@ -70,6 +65,14 @@
       <button class="scale-btn" data-value="9">9</button>
       <button class="scale-btn" data-value="10">10</button>
     </div>
+    
+    <p class="scale-guide">
+      * /
+      1：全く人らしくない /  
+      4：違和感が目立つ /  
+      7：多少違和感はあるが人らしい /  
+      10：人と遜色ない
+    </p>
 
     <label>あなたの性別（必須）</label>
     <select id="gender-select">
