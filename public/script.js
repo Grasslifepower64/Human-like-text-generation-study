@@ -142,7 +142,7 @@ async function showSettings() {
   const res = await fetch(`/session-settings?sessionID=${customSessionID}`);
   const s = await res.json();
   appendMessage(
-    `あなたが話したAIの設定は\n方言:${s.dialect}\n文法ミス:${s.grammarNoise}\n語尾:${s.wordEnding}\n感動詞:${s.interjectionLevels}\nでした～`,
+    `あなたが話したAIの設定は\n方言:${s.dialect}\n文法ミス:${s.grammarNoise}\n語尾:${s.wordEnding}\n感動詞:${s.interjections}\nでした～`,
     "bot"
   );
 }
