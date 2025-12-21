@@ -113,6 +113,25 @@ async function sendFeedback() {
 
   document.getElementById("chat-box").scrollTop = 0;
 
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+
+  function showToast(message) {
+    const toast = document.getElementById("toast");
+    toast.innerText = message;
+    toast.style.visibility = "visible";
+
+    // 3秒後に消去
+    setTimeout(() => {
+     toast.style.visibility = "hidden";
+    }, 3000);
+  }
+
+  // 実行例
+  showToast("ご協力ありがとうございました！！これで調査は終わりとなります");
+
   setTimeout(() => {
     appendMessage("✨ ご協力ありがとうございました！ ✨", "bot");
     showSettings();
@@ -123,7 +142,7 @@ async function showSettings() {
   const res = await fetch(`/session-settings?sessionID=${customSessionID}`);
   const s = await res.json();
   appendMessage(
-    `このAIの設定\n方言:${s.dialect}\n文法ミス:${s.grammarNoise}\n語尾:${s.wordEnding}\n感動詞:${s.interjectionLevels}`,
+    `あなたが話したAIの設定は\n方言:${s.dialect}\n文法ミス:${s.grammarNoise}\n語尾:${s.wordEnding}\n感動詞:${s.interjectionLevels}\nでした～`,
     "bot"
   );
 }
