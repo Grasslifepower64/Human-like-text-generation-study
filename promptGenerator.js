@@ -9,7 +9,7 @@ function randomPick(arr) {
 }
 
 function buildSystemInstruction(settings) {
-  let instruction = 'あなたは日本語で会話するAIです。英語を使ってはいけません';
+  let instruction = 'あなたは日本語で会話するAIです。英語を使ってはいけません。相手に質問するときには一つだけにしてください。相手の質問にはあなた自身について回答し、できるだけ簡潔に話すようにしてください。相手の感情を深く読み取り、共感的で丁寧な応答を心がけてください。';
 
   const wordEndingMap = {
     カジュアル: 'カジュアルなタメ口で話してください。',
