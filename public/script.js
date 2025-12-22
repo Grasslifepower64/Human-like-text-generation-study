@@ -8,8 +8,9 @@ let conversationEnded = false;
 
 // ===== 起動 =====
 window.onload = () => {
-  document.addEventListener("keydown", startApp);
-  document.addEventListener("click", startApp);
+  // ★ 重要：startApp は最初の1回だけ
+  document.addEventListener("keydown", startApp, { once: true });
+  document.addEventListener("click", startApp, { once: true });
 
   document.getElementById("send-btn").onclick = sendMessage;
   document.getElementById("end-btn").onclick = endConversation;
@@ -17,17 +18,19 @@ window.onload = () => {
 
   document.querySelectorAll(".scale-btn").forEach(btn => {
     btn.onclick = () => {
-      document.querySelectorAll(".scale-btn").forEach(b => b.classList.remove("selected"));
+      document.querySelectorAll(".scale-btn")
+        .forEach(b => b.classList.remove("selected"));
+
       btn.classList.add("selected");
       selectedScore = btn.dataset.value;
+
+      console.log("✅ score selected:", selectedScore);
     };
   });
 };
 
 // ===== スタート =====
 function startApp() {
-  document.removeEventListener("keydown", startApp);
-  document.removeEventListener("click", startApp);
   document.getElementById("start-screen").style.display = "none";
 
   if (!localStorage.getItem("consentGiven")) {
@@ -45,16 +48,19 @@ function acceptConsent() {
   appendMessage("こんにちは！自由に話しかけてください。", "bot");
 }
 
-// ===== メッセージ =====
+// ===== メッセージ表示 =====
 function appendMessage(text, sender) {
   const box = document.getElementById("chat-box");
   const wrap = document.createElement("div");
   wrap.className = `message ${sender}`;
+
   const bubble = document.createElement("div");
   bubble.className = "bubble";
   bubble.innerText = text;
+
   wrap.appendChild(bubble);
   box.appendChild(wrap);
+
   box.scrollTop = box.scrollHeight;
 }
 
@@ -79,20 +85,28 @@ async function sendMessage() {
   appendMessage(data.response, "bot");
 }
 
-// ===== 終了 =====
+// ===== 会話終了 =====
 function endConversation() {
   conversationEnded = true;
   document.getElementById("user-input").disabled = true;
   document.getElementById("send-btn").disabled = true;
 
-  document.getElementById("feedback-section").scrollIntoView({ behavior: "smooth" });
+  document.getElementById("feedback-section")
+    .scrollIntoView({ behavior: "smooth" });
 }
 
-// ===== フィードバック =====
+// ===== フィードバック送信 =====
 async function sendFeedback() {
-  if (!selectedScore) return alert("評価を選択してください");
+  if (!selectedScore) {
+    alert("評価を選択してください");
+    return;
+  }
+
   const gender = document.getElementById("gender-select").value;
-  if (!gender) return alert("性別を選択してください");
+  if (!gender) {
+    alert("性別を選択してください");
+    return;
+  }
 
   const btn = document.getElementById("send-feedback");
   btn.innerText = "送信中…";
@@ -111,25 +125,8 @@ async function sendFeedback() {
 
   btn.innerText = "送信済み ✓";
 
-  document.getElementById("chat-box").scrollTop = 0;
+  window.scrollTo({ top: 0, behavior: "smooth" });
 
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
-
-  function showToast(message) {
-    const toast = document.getElementById("toast");
-    toast.innerText = message;
-    toast.style.visibility = "visible";
-
-    // 3秒後に消去
-    setTimeout(() => {
-     toast.style.visibility = "hidden";
-    }, 3000);
-  }
-
-  // 実行例
   showToast("ご協力ありがとうございました！！これで調査は終わりとなります");
 
   setTimeout(() => {
@@ -138,11 +135,29 @@ async function sendFeedback() {
   }, 3000);
 }
 
+// ===== トースト =====
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.innerText = message;
+  toast.style.visibility = "visible";
+
+  setTimeout(() => {
+    toast.style.visibility = "hidden";
+  }, 3000);
+}
+
+// ===== AI設定表示 =====
 async function showSettings() {
   const res = await fetch(`/session-settings?sessionID=${customSessionID}`);
   const s = await res.json();
+
   appendMessage(
-    `あなたが話したAIの設定は\n方言:${s.dialect}\n文法ミス:${s.grammarNoise}\n語尾:${s.wordEnding}\n感動詞:${s.interjections}\nでした～`,
+    `あなたが話したAIの設定は
+    方言: ${s.dialect}
+    文法ミス: ${s.grammarNoise}
+    語尾: ${s.wordEnding}
+    感動詞: ${s.interjections}
+    でした～`,
     "bot"
   );
 }
