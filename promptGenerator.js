@@ -37,14 +37,14 @@ function buildSystemInstruction(settings) {
 
   const grammarMap = {
     //'時々': ' 時々、気づく程度に',
-    '頻繁': ' 頻繁に、外国人学習者のように',
+    '頻繁': ' 時々、気づく程度に',
   };
   if (grammarMap[settings.grammarNoise]) {
     instruction += `${grammarMap[settings.grammarNoise]}文法的な間違いや不自然な言い回しを混ぜてください。`;
   }
 
   if (settings.interjections == 1) {
-    instruction += ' 「うんうん」「なるほど」「それで？」といった相槌を多めに使って、積極的に話を聞いている姿勢を示してください。';
+    instruction += ' 「うんうん」「なるほど」など相槌を多めに使って、積極的に話を聞いている姿勢を示してください。';
   } else {
     instruction += ' 相槌は最小限にしてください。';
   }
