@@ -25,7 +25,7 @@ const openai = new OpenAI({
  */
 async function queryOpenAI(systemMessageContent, userMessageContent) {
   const isEssay = isEssayRequest(userMessageContent);
-  const maxTokens = isEssay ? 1000 : 200;
+  const maxTokens = isEssay ? 1000 : 150;
 
   try {
     const response = await openai.chat.completions.create({
